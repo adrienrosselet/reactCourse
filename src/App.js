@@ -56,7 +56,6 @@ class App extends React.Component {
             rel="noopener noreferrer"
           >
             Learn React
-
           </a>
           <p>{this.state.text}</p>
         </header>
