@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './components.css'
 export default class MessageField extends React.Component{
   state = {
       discussion: [{author: 'robot', message: 'hi I am mister robot'}],
@@ -7,38 +7,43 @@ export default class MessageField extends React.Component{
   };
 
   handleSubmit = (event) => {
-    this.setState({discussion: [...this.state.discussion,{author: 'pedro', message: this.state.value}]});
-    this.setState({value: ''});
+    this.setState(state => ({discussion: [...this.state.discussion,{author: 'pedro', message: state.value}], value: ''}));
     event.preventDefault();
   };
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
   };
+  handleKey = (event) => {
+    if(event.key === 'Enter'){
+      this.setState(state => ({discussion: [...this.state.discussion,{author: 'pedro', message: state.value}], value: ''}));
+    }
+  }
 
   componentDidUpdate() {
        if (this.state.discussion[this.state.discussion.length - 1].author !== 'robot') {
            setTimeout(() =>
-                   this.setState({
-                       discussion: [ ...this.state.discussion, {author: 'robot', message: 'hi pedro!'} ] }),
-               600);
+                   this.setState(state => ({
+                       discussion: [ ...this.state.discussion, {author: 'robot', message: 'hi pedro!'} ] })),
+               1000);
        }
    }
 
+   renderMessage = (mess, index) => {
+     return (<Message key={index} mes={mess.message} aut={mess.author} />)
+   }
 
   render() {
-    let messageCompo = this.state.discussion.map((mess, index) => (<Message key={index} mes={mess.message} aut={mess.author} />));
-
     return (
     <div>
       <form onSubmit={this.handleSubmit}>
         <label>
           Message:
-          <textarea value={this.state.value} onChange={this.handleChange} />
+          <textarea value={this.state.value} onChange={this.handleChange} onKeyPress={this.handleKey}/>
         </label>
         <input type="submit" value="Envoyer" />
       </form>
-      {messageCompo}
+      {this.state.discussion.map(this.renderMessage)}
     </div>
   );
   }
@@ -53,10 +58,19 @@ class Message extends React.Component{
   }
 
   render() {
-
+    let color1 = {
+      backgroundColor: '#c0c0cc'
+    }
+    if(this.props.aut === 'robot'){
+      color1 = {
+        backgroundColor: '#ececec'
+      };
+    }
     return (
-      <div>
-        <p><span style={{color: '#0f9f9f'}}>{this.props.aut}: </span>{this.props.mes} </p>
+
+      <div className='message-div' style={color1}>
+        <h2 className='message-author-span'>{this.props.aut}: </h2>
+        <p className='message-p'>{this.props.mes} </p>
 
       </div>
     );
