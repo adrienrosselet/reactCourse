@@ -1,8 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
-import MessageField from './components';
+import Layout from './layout';
 import './App.css';
-
+//import MuiThemeProvider from '@material-ui/core/style';
+//import Button from '@material-ui/core/Button';
 // function App() {
 //
 //   return (
@@ -33,12 +34,7 @@ class App extends React.Component {
   render (){
       return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-
-          <MessageField />
-
-        </header>
+        <Layout/>
       </div>
     );
   }

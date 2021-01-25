@@ -1,3 +1,17 @@
+.layout-div{
+  width: 100%;
+  background-color: #ddddff;
+}
+.chatlist-ul{
+  width: 30%;
+  background-color: #dddfff;
+  float: left;
+}
+.textFiels-div{
+  width: 70%;
+  background-color: #ddffff;
+  float: right;
+}
 .message-author-span{
   color: #0f9f9f;
   font-size: 15px;
@@ -7,11 +21,13 @@
 .message-div{
   background-color: #c0c0cc;
   border-radius: 5px;
-  width: 400px;
+  width: 90%;
   font-size: 18px;
   text-align: left;
+  /* float: left; */
   padding: 2px;
   margin: 2px;
+  /* display: contents; */
 }
 .message-p{
   color: black;

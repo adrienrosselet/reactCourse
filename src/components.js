@@ -1,5 +1,6 @@
 import React from 'react';
-import './components.css'
+import './components.css';
+
 export default class MessageField extends React.Component{
   state = {
       discussion: [{author: 'robot', message: 'hi I am mister robot'}],
@@ -22,10 +23,12 @@ export default class MessageField extends React.Component{
 
   componentDidUpdate() {
        if (this.state.discussion[this.state.discussion.length - 1].author !== 'robot') {
-           setTimeout(() =>
-                   this.setState(state => ({
-                       discussion: [ ...this.state.discussion, {author: 'robot', message: 'hi pedro!'} ] })),
-               1000);
+           setTimeout(() => {
+             if(this.state.discussion[this.state.discussion.length - 1].author !== 'robot'){
+               this.setState(state => ({
+                   discussion: [ ...this.state.discussion, {author: 'robot', message: 'hi pedro!'} ] }))
+             }
+           },1500);
        }
    }
 
@@ -35,7 +38,7 @@ export default class MessageField extends React.Component{
 
   render() {
     return (
-    <div>
+    <div className='textFiels-div'>
       <form onSubmit={this.handleSubmit}>
         <label>
           Message:
@@ -59,11 +62,15 @@ class Message extends React.Component{
 
   render() {
     let color1 = {
-      backgroundColor: '#c0c0cc'
+      backgroundColor: '#c0c0cc',
+      textAlign: 'right',
+      float: 'right'
     }
     if(this.props.aut === 'robot'){
       color1 = {
-        backgroundColor: '#ececec'
+        backgroundColor: '#ececec',
+        textAlign: 'left',
+        float: 'left'
       };
     }
     return (
