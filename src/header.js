@@ -1,8 +1,8 @@
 import React from 'react';
-import './components.css';
+import './header.css';
 
 export default class Header extends React.Component{
   render(){
-    return <h1>header</h1>
+    return <h1>Chat :{this.props.chatId}</h1>
   }
 }

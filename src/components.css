@@ -1,12 +1,4 @@
-.layout-div{
-  width: 100%;
-  background-color: #ddddff;
-}
-.chatlist-ul{
-  width: 30%;
-  background-color: #dddfff;
-  float: left;
-}
+
 .textFiels-div{
   width: 70%;
   background-color: #ddffff;
@@ -18,17 +10,26 @@
   padding: 2px;
   margin: 0px;
 }
+.mess-div{
+  height: 55px;
+}
 .message-div{
   background-color: #c0c0cc;
   border-radius: 5px;
-  width: 90%;
   font-size: 18px;
-  text-align: left;
-  /* float: left; */
   padding: 2px;
-  margin: 2px;
-  /* display: contents; */
+  text-align: right;
+  float: right;
 }
+.message-div2{
+  background-color: #ececec;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 2px;
+  text-align: left;
+  float: left;
+}
+
 .message-p{
   color: black;
   padding: 2px;

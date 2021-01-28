@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import Layout from './layout';
 import './App.css';
+import Router from './Router'
 //import MuiThemeProvider from '@material-ui/core/style';
 //import Button from '@material-ui/core/Button';
 // function App() {
@@ -34,7 +35,7 @@ class App extends React.Component {
   render (){
       return (
       <div className="App">
-        <Layout/>
+        <Router/>
       </div>
     );
   }
