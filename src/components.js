@@ -10,40 +10,43 @@ class MessageField extends React.Component{
   //     value: ''
   // };
   state = {
-       chats: {
-           1: {title: 'Чат 1', messageList: [1]},
-           2: {title: 'Чат 2', messageList: [2]},
-           3: {title: 'Чат 3', messageList: []},
-       },
-       messages: {
-           1: { text: "Привет!", sender: 'bot' },
-           2: { text: "Здравствуйте!", sender: 'bot' },
-       },
+       // chats: {
+       //     1: {title: 'Чат 1', messageList: [1]},
+       //     2: {title: 'Чат 2', messageList: [2]},
+       //     3: {title: 'Чат 3', messageList: []},
+       // },
+       // messages: {
+       //     1: { text: "Привет!", sender: 'bot' },
+       //     2: { text: "Здравствуйте!", sender: 'bot' },
+       // },
        value: '',
    };
-   handleSendMessage = (message, sender) => {
-       const { messages, chats, value } = this.state;
-       const { chatId } = this.props;
+   //handleSendMessage = (message, sender) => {
+       //const { messages, chats, value, chatId } = this.props;
+       //const { chatId } = this.props;
 
-       if (value.length > 0 || sender === 'bot') {
-           const messageId = Object.keys(messages).length + 1;
-           this.setState({
-               messages: {...messages,
-                   [messageId]: {text: message, sender: sender}},
-               chats: {...chats,
-                   [chatId]: { ...chats[chatId],
-                       messageList: [...chats[chatId]['messageList'], messageId]
-                   }
-               },
-           })
-       }
-       if (sender === 'me') {
-           this.setState({ value: '' })
-       }
-   };
+       // if (value.length > 0 || sender === 'bot') {
+       //     const messageId = Object.keys(messages).length + 1;
+       //     this.setState({
+       //         messages: {...messages,
+       //             [messageId]: {text: message, sender: sender}},
+       //         chats: {...chats,
+       //             [chatId]: { ...chats[chatId],
+       //                 messageList: [...chats[chatId]['messageList'], messageId]
+       //             }
+       //         },
+       //     })
+       // }
+       // if (sender === 'me') {
+       //     this.setState({ value: '' })
+       // }
+   //     this.props.sendMessage(this.state.value, 'adri');
+   // };
 
   handleSubmit = (event) => {
-    this.handleSendMessage(this.state.value, 'me')
+    this.props.sendMessage(this.state.value, 'adri');
+    this.setState({ value: '' });
+    //this.handleSendMessage(this.state.value, 'me')
     //this.setState(state => ([this.props.chatId]: [...state.discussion,{author: 'pedro', message: state.value}], value: ''}));
     event.preventDefault();
   };
@@ -56,7 +59,8 @@ class MessageField extends React.Component{
    };
   handleKey = (event) => {
     if(event.key === 'Enter'){
-      this.handleSendMessage(this.state.value, 'me')
+      this.props.sendMessage(this.state.value, 'adri')
+      this.setState({ value: '' });
       //this.setState(state => ([this.props.chatId]: [...state.discussion,{author: 'pedro', message: state.value}], value: ''}));
     }
   }
@@ -71,14 +75,16 @@ class MessageField extends React.Component{
   //          },1500);
   //      }
   //  }
-   componentDidUpdate(prevProps, prevState) {
-       const { messages } = this.state;
-       if (Object.keys(prevState.messages).length < Object.keys(messages).length &&
-           Object.values(messages)[Object.values(messages).length - 1].sender === 'me') {
-           setTimeout(() =>
-               this.handleSendMessage('Не приставай ко мне, я робот!', 'bot'), 1000);
-       }
-   }
+
+   // componentDidUpdate(prevProps, prevState) {
+   //     const { messages } = this.state;
+   //     if (Object.keys(prevState.messages).length < Object.keys(messages).length &&
+   //         Object.values(messages)[Object.values(messages).length - 1].sender === 'me') {
+   //         setTimeout(() =>
+   //             this.handleSendMessage('Не приставай ко мне, я робот!', 'bot'), 1000);
+   //     }
+   // }
+
    // handleAddChat = () => {
    //   const newChatId = Object.keys(this.state.chats).length + 2;
    //   //const newChatId = 4;
@@ -92,7 +98,10 @@ class MessageField extends React.Component{
    //  }
 
    renderMessage = (messId, index) => {
-     return (<Message key={index} mes={this.state.messages[messId].text } aut={this.state.messages[messId].sender} />)
+     //console.log(messObj.messageList[]);//ca rends un array avec l'id des messages
+     //console.log(this.props.chatId);//ca rends l id du chat actuel
+     //console.log(this.props.messages[messId].sender);
+     return (<Message key={index} mes={this.props.messages[messId].text } aut={this.props.messages[messId].sender} />)
    }
 
   render() {
@@ -106,13 +115,15 @@ class MessageField extends React.Component{
         </label>
         <input type="submit" value="Envoyer" />
       </form>
-      {this.props.chatId!==undefined?
-        this.state.chats[this.props.chatId].messageList.map(this.renderMessage):
-        this.state.chats[1].messageList.map(this.renderMessage)}
+      {Object.values(this.props.chats[this.props.chatId].messageList).map(this.renderMessage)}
     </div>
   );
   }
 }
+
+// {this.props.chatId!==undefined?
+//   this.state.chats[this.props.chatId].messageList.map(this.renderMessage):
+//   this.state.chats[1].messageList.map(this.renderMessage)}
 
 const mapStateToProps = ({ chatReducer }) => ({
    chats: chatReducer.chats,
@@ -136,7 +147,7 @@ class Message extends React.Component{
   }
   selectClassName = () => {
     let style1 = 'message-div';
-    if(this.props.aut !== 'me'){
+    if(this.props.aut !== 'adri'){
       style1 = 'message-div2';
     }
     return style1;

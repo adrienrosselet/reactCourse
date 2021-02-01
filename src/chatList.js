@@ -38,7 +38,7 @@ class ChatList extends React.Component{
   renderList = (ele, index) => {
     return(
       <Link key={index} to={"chat/"+(index+1)+"/"}>
-        <ListItem key={index} button>
+        <ListItem button>
           <ListItemIcon >
             <SendIcon />
           </ListItemIcon>
@@ -51,12 +51,13 @@ class ChatList extends React.Component{
   render(){
     return (
       <List className='chatlist-ul'>
-          <h1>{this.props.chats[2].title}</h1>
           {Object.values(this.props.chats).map(this.renderList)}
+          <ListItem>
           <form onSubmit={this.submitHandler}>
             <input type="text" value={this.state.newChatName} onChange={this.changeHandler} />
             <input type='submit' />
           </form>
+          </ListItem>
       </List>
     );
   }

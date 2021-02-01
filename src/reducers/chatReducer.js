@@ -8,6 +8,10 @@ const initialStore = {
            2: {title: 'Чат 2', messageList: [2]},
            3: {title: 'Чат 3', messageList: []},
        },
+    messages: {
+           1: { text: "Привет!", sender: 'bot' },
+           2: { text: "Здравствуйте!", sender: 'bot' },
+       },
 };
 
 
@@ -19,6 +23,10 @@ export default function chatReducer(store = initialStore, action) {
                    title: store.chats[action.chatId].title,
                    messageList: [...store.chats[action.chatId].messageList, action.messageId]
                } } },
+               messages: { $merge: { [action.messageId]: {
+                    text: action.text,
+                    sender: action.sender
+               }}}
            });
        }
        case ADD_CHAT: {
