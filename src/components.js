@@ -1,8 +1,9 @@
 import React from 'react';
 import './components.css';
+import { bindActionCreators } from "redux";
+import connect from "react-redux/es/connect/connect";
 
-
-export default class MessageField extends React.Component{
+class MessageField extends React.Component{
   // state = {
   //     discussion: [ {author: 'robot', message: 'hi I am mister robot'],
   //
@@ -78,26 +79,26 @@ export default class MessageField extends React.Component{
                this.handleSendMessage('Не приставай ко мне, я робот!', 'bot'), 1000);
        }
    }
-   handleAddChat = () => {
-     const newChatId = Object.keys(this.state.chats).length + 2;
-     //const newChatId = 4;
-     this.setState({
-         chats: {...this.state.chats,
-             [newChatId]: {title: 'Чат '+ newChatId, messageList: [newChatId]}
-         },
-     })
-     //console.log(this.state.chats);
-
-    }
+   // handleAddChat = () => {
+   //   const newChatId = Object.keys(this.state.chats).length + 2;
+   //   //const newChatId = 4;
+   //   this.setState({
+   //       chats: {...this.state.chats,
+   //           [newChatId]: {title: 'Чат '+ newChatId, messageList: [newChatId]}
+   //       },
+   //   })
+   //   //console.log(this.state.chats);
+   //
+   //  }
 
    renderMessage = (messId, index) => {
      return (<Message key={index} mes={this.state.messages[messId].text } aut={this.state.messages[messId].sender} />)
    }
 
   render() {
+
     return (
     <div className='textFiels-div'>
-    <button onClick={this.handleAddChat}>Add chat</button>
       <form onSubmit={this.handleSubmit}>
         <label>
           Message:
@@ -105,11 +106,26 @@ export default class MessageField extends React.Component{
         </label>
         <input type="submit" value="Envoyer" />
       </form>
-      {this.state.chats[this.props.chatId].messageList.map(this.renderMessage)}
+      {this.props.chatId!==undefined?
+        this.state.chats[this.props.chatId].messageList.map(this.renderMessage):
+        this.state.chats[1].messageList.map(this.renderMessage)}
     </div>
   );
   }
 }
+
+const mapStateToProps = ({ chatReducer }) => ({
+   chats: chatReducer.chats,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageField);
+
+
+
+
+
 
 class Message extends React.Component{
   constructor(props) {

@@ -7,20 +7,42 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SendIcon from '@material-ui/icons/Send';
 import './chatList.css'
 import { Link } from 'react-router-dom';
+// import PropTypes from "prop-types";
 
-export default class ChatList extends React.Component{
-  state = {
-    chats: [{name: 'chat noir', id: '1'},{name: 'chat botte', id: '2'},{name: 'chatiment', id: '3'}]
-  };
+import {bindActionCreators} from "redux";
+import connect from "react-redux/es/connect/connect";
+import { addChat } from './actions/chatActions';
 
+class ChatList extends React.Component{
+
+  // state = {
+  //   chats: [{name: 'chat noir', id: '1'},{name: 'chat botte', id: '2'},{name: 'chatiment', id: '3'}]
+  // };
+
+
+  // static propTypes = {
+  //      chats: PropTypes.object.isRequired,
+  //      addChat: PropTypes.func.isRequired,
+  //  };
+
+   state = {
+       newChatName: ''
+   };
+   changeHandler = (event) => {
+     this.setState({ newChatName: event.target.value });
+   }
+   submitHandler = (event) => {
+     this.props.addChat(this.state.newChatName);
+     event.preventDefault();
+   }
   renderList = (ele, index) => {
     return(
-      <Link to={"/chat/"+ele.id+"/"}>
+      <Link key={index} to={"chat/"+(index+1)+"/"}>
         <ListItem key={index} button>
           <ListItemIcon >
             <SendIcon />
           </ListItemIcon>
-          <ListItemText  primary={ele.name} />
+          <ListItemText  primary={ele.title} />
         </ListItem>
       </Link>
     );
@@ -28,15 +50,22 @@ export default class ChatList extends React.Component{
 
   render(){
     return (
-
       <List className='chatlist-ul'>
-          {this.state.chats.map(this.renderList)}
+          <h1>{this.props.chats[2].title}</h1>
+          {Object.values(this.props.chats).map(this.renderList)}
+          <form onSubmit={this.submitHandler}>
+            <input type="text" value={this.state.newChatName} onChange={this.changeHandler} />
+            <input type='submit' />
+          </form>
       </List>
     );
   }
 }
-// <ul className='chatlist-ul'>
-//   <li>chat noir</li>
-//   <li>chat botte</li>
-//   <li>chatiment</li>
-// </ul>
+
+const mapStateToProps = ({ chatReducer }) => ({
+   chats: chatReducer.chats,
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({ addChat }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatList);
