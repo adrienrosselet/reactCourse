@@ -37,7 +37,7 @@ class ChatList extends React.Component{
    }
   renderList = (ele, index) => {
     return(
-      <Link key={index} to={"chat/"+(index+1)+"/"}>
+      <Link key={index} to={"/chat/"+(index+1)+"/"}>
         <ListItem button>
           <ListItemIcon >
             <SendIcon />
