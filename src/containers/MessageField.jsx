@@ -4,6 +4,8 @@ import Message from '../components/Message';
 import { bindActionCreators } from "redux";
 import connect from "react-redux/es/connect/connect";
 import PropTypes from "prop-types";
+import { resetChat } from '../actions/chatActions';
+import { resetMessage } from '../actions/messageActions';
 
 class MessageField extends React.Component{
   static propTypes = {
@@ -36,25 +38,42 @@ class MessageField extends React.Component{
        // }
    //     this.props.sendMessage(this.state.value, 'adri');
    // };
+   handleSendMessage = (message, sender) => {
+        if (this.state.value.length > 0 || sender === 'bot') {
+            this.props.sendMessage(message, sender);
+        }
+        if (sender === 'adri') {
+            this.setState({ value: '' });
+        }
+    };
 
   handleSubmit = (event) => {
-    this.props.sendMessage(this.state.value, 'adri');
-    this.setState({ value: '' });
+    //this.props.sendMessage(this.state.value, 'adri');
+    this.handleSendMessage(this.state.value, 'adri');
+    //this.setState({ value: '' });
+
     //this.handleSendMessage(this.state.value, 'me')
     //this.setState(state => ([this.props.chatId]: [...state.discussion,{author: 'pedro', message: state.value}], value: ''}));
     event.preventDefault();
   };
 
   // handleChange = (event) => {
-  //   this.setState({value: event.target.value});
-  // };
+  //      this.setState({ [event.target.name]: event.target.value });
+  //  };
   handleChange = (event) => {
        this.setState({ value: event.target.value });
    };
+   // handleKeyUp = (event) => {
+   //      if (event.keyCode === 13) { // Enter
+   //          this.handleSendMessage(this.state.input, 'adri');
+   //      }
+   //  };
   handleKey = (event) => {
     if(event.key === 'Enter'){
-      this.props.sendMessage(this.state.value, 'adri')
-      this.setState({ value: '' });
+      //this.props.sendMessage(this.state.value, 'adri');
+      this.handleSendMessage(this.state.value, 'adri');
+      //this.setState({ value: '' });
+
       //this.setState(state => ([this.props.chatId]: [...state.discussion,{author: 'pedro', message: state.value}], value: ''}));
     }
   }
@@ -97,11 +116,9 @@ class MessageField extends React.Component{
      //console.log(messId);
      //return (<Message key={index} mes={this.props.messages[messId].text } aut={this.props.messages[messId].sender} />)
    //}
-
   render() {
-      const { messages, chats } = this.props;
-       const { chatId } = this.props;
-       //console.log(chats);
+      const { chatId, messages, chats } = this.props;
+       //console.log(messages[8].text);
        const messageElements = chats[chatId].messageList.map((messageId, index) => (
          <Message
              key={ index }
@@ -118,6 +135,8 @@ class MessageField extends React.Component{
           <textarea value={this.state.value} onChange={this.handleChange} onKeyPress={this.handleKey}/>
         </label>
         <input type="submit" value="Envoyer" />
+        <button onClick={this.props.resetChat} >resetChat</button>
+        <button onClick={this.props.resetMessage} >resetMes</button>
       </form>
       { messageElements }
     </div>
@@ -137,6 +156,6 @@ const mapStateToProps = ({ chatReducer }) => ({
    chats: chatReducer.chats,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ resetChat, resetMessage }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageField);

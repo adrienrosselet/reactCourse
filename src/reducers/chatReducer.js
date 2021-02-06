@@ -1,6 +1,8 @@
 import update from 'react-addons-update';
 import { SEND_MESSAGE } from '../actions/messageActions';
 import { ADD_CHAT } from "../actions/chatActions";
+import { DELETE_CHAT } from "../actions/chatActions";
+import { RESET_CHAT } from "../actions/chatActions";
 
 const initialStore = {
    chats: {
@@ -8,23 +10,47 @@ const initialStore = {
            2: {title: 'Чат 2', messageList: [2]},
            3: {title: 'Чат 3', messageList: []},
        },
-    
+
 };
 
 
 export default function chatReducer(store = initialStore, action) {
-   switch (action.type) {
-
-       case ADD_CHAT: {
-           const chatId = Object.keys(store.chats).length + 1;
-           return update(store, {
-              chats: { $merge: {
-                  [chatId]: {
-                      title: action.title, messageList: []
+  switch (action.type) {
+      case SEND_MESSAGE: {
+          return update(store, {
+              chats: { $merge: { [action.chatId]: {
+                  title: store.chats[action.chatId].title,
+                  messageList: [...store.chats[action.chatId].messageList, action.messageId]
               } } },
-           });
-       }
-       default:
-           return store;
-   }
+          });
+      }
+      case ADD_CHAT: {
+          const chatId = Object.keys(store.chats).length + 1;
+          return update(store, {
+             chats: { $merge: {
+                 [chatId]: {
+                     title: action.title, messageList: []
+             } } },
+          });
+      }
+      case DELETE_CHAT: {
+          const chatId = Object.keys(store.chats).length + 1;
+          return update(store, {
+             chats: { $merge: {
+                 [action.chatId]: {
+                     title: action.title, messageList: []
+             } } },
+          });
+      }
+      case RESET_CHAT: {
+        return update(store, {
+           chats: { $set: {
+                 1: {
+                     title: 'pouet', messageList: []
+             } } },
+        });
+      }
+      default:
+          return store;
+  }
 }

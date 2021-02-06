@@ -51,7 +51,7 @@ class Layout extends React.Component{
           messages: {...messages,
               [messageId]: {text: message, sender: sender}},
     });
-    console.log(messages);
+    //console.log(message,chatId);
     this.props.sendMessage(messageId, message, sender, chatId);
   };
 
@@ -69,10 +69,11 @@ class Layout extends React.Component{
     );
   }
 }
-const mapStateToProps = ({ chatReducer }) => ({
-   messages: chatReducer.messages,
+//const mapStateToProps = () => ({
+//});
+const mapStateToProps = ({ messageReducer }) => ({
+   messages: messageReducer.messages,
 });
-
 const mapDispatchToProps = dispatch => bindActionCreators({ sendMessage }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);

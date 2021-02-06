@@ -5,8 +5,10 @@ export default store => next => (action) => {
        case SEND_MESSAGE:
            if (action.sender === 'adri') {
              setTimeout(() => store.dispatch(
-               sendMessage( Object.keys(store.getState().chatReducer.messages).length + 1,
+               sendMessage( Object.keys(store.getState().messageReducer.messages).length + 1,
                      'Не приставай ко мне, я робот!', 'bot', action.chatId)), 1000)
+              //console.log('on va répondre')       
+
            }
    }
    return next(action)
