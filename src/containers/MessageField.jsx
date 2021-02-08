@@ -5,7 +5,9 @@ import { bindActionCreators } from "redux";
 import connect from "react-redux/es/connect/connect";
 import PropTypes from "prop-types";
 import { resetChat } from '../actions/chatActions';
-import { resetMessage } from '../actions/messageActions';
+import { resetMessage, loadMessages } from '../actions/messageActions';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { loadChats } from '../actions/chatActions';
 
 class MessageField extends React.Component{
   static propTypes = {
@@ -13,10 +15,19 @@ class MessageField extends React.Component{
        messages: PropTypes.object.isRequired,
        chats: PropTypes.object.isRequired,
        sendMessage: PropTypes.func.isRequired,
+       isLoading: PropTypes.bool.isRequired,
+
    };
   state = {
        value: '',
    };
+
+   componentDidMount() {
+       //this.props.loadMessages();
+       this.props.loadChats();
+   }
+
+
    //handleSendMessage = (message, sender) => {
        //const { messages, chats, value, chatId } = this.props;
        //const { chatId } = this.props;
@@ -116,9 +127,17 @@ class MessageField extends React.Component{
      //console.log(messId);
      //return (<Message key={index} mes={this.props.messages[messId].text } aut={this.props.messages[messId].sender} />)
    //}
+   resetAll = () => {
+     this.props.resetChat();
+     this.props.resetMessage();
+   }
   render() {
+    if (this.props.isLoading) {
+           return <CircularProgress />
+       }
       const { chatId, messages, chats } = this.props;
-       //console.log(messages[8].text);
+       console.log(chatId);
+       //const messageElements='';
        const messageElements = chats[chatId].messageList.map((messageId, index) => (
          <Message
              key={ index }
@@ -135,8 +154,7 @@ class MessageField extends React.Component{
           <textarea value={this.state.value} onChange={this.handleChange} onKeyPress={this.handleKey}/>
         </label>
         <input type="submit" value="Envoyer" />
-        <button onClick={this.props.resetChat} >resetChat</button>
-        <button onClick={this.props.resetMessage} >resetMes</button>
+        <button onClick={this.resetAll} >reset all</button>
       </form>
       { messageElements }
     </div>
@@ -152,10 +170,11 @@ class MessageField extends React.Component{
 //   this.state.chats[this.props.chatId].messageList.map(this.renderMessage):
 //   this.state.chats[1].messageList.map(this.renderMessage)}
 
-const mapStateToProps = ({ chatReducer }) => ({
+const mapStateToProps = ({ chatReducer , messageReducer }) => ({
    chats: chatReducer.chats,
+   isLoading: messageReducer.isLoading,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ resetChat, resetMessage }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ resetChat, resetMessage , loadChats}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageField);

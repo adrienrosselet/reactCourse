@@ -54,7 +54,15 @@ class Layout extends React.Component{
     //console.log(message,chatId);
     this.props.sendMessage(messageId, message, sender, chatId);
   };
-
+  // componentDidMount() {
+  //    fetch('/api/messages.json'
+  //    ).then(body => body.json()).
+  //    then(json => {
+  //        json.forEach(msg => {
+  //            this.props.sendMessage(msg.id, msg.text, msg.sender, msg.chatId);
+  //        })
+  //    })
+  // }
   render(){
     return (
     <div className='layout-div'>
