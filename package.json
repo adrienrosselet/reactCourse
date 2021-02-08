@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "connected-react-router": "^6.8.0",
     "history": "^5.0.0",
+    "normalizr": "^3.6.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-addons-update": "^15.6.3",
@@ -19,6 +20,7 @@
     "react-scripts": "4.0.1",
     "reduct": "^3.3.1",
     "redux": "^4.0.5",
+    "redux-api-middleware": "^3.2.1",
     "redux-persist": "^6.0.0",
     "web-vitals": "^0.2.4"
   },
@@ -28,6 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": [
       "react-app",
