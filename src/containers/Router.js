@@ -22,3 +22,4 @@ export default class Router extends React.Component {
        )
    }
 }
+ //Number(obj.match.params.chatId)

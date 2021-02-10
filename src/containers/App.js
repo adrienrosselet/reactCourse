@@ -1,6 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
-import Layout from './layout';
+//import logo from './logo.svg';
 import './App.css';
 import Router from './Router'
 //import MuiThemeProvider from '@material-ui/core/style';

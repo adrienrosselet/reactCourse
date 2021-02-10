@@ -1,26 +1,33 @@
 import React from 'react';
-import './components.css';
+import './MessageField.css';
+import Message from '../components/Message';
 import { bindActionCreators } from "redux";
 import connect from "react-redux/es/connect/connect";
+import PropTypes from "prop-types";
+import { resetChat } from '../actions/chatActions';
+import { resetMessage, loadMessages } from '../actions/messageActions';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { loadChats } from '../actions/chatActions';
 
 class MessageField extends React.Component{
-  // state = {
-  //     discussion: [ {author: 'robot', message: 'hi I am mister robot'],
-  //
-  //     value: ''
-  // };
+  static propTypes = {
+       chatId: PropTypes.number.isRequired,
+       messages: PropTypes.object.isRequired,
+       chats: PropTypes.object.isRequired,
+       sendMessage: PropTypes.func.isRequired,
+       isLoading: PropTypes.bool.isRequired,
+
+   };
   state = {
-       // chats: {
-       //     1: {title: 'Чат 1', messageList: [1]},
-       //     2: {title: 'Чат 2', messageList: [2]},
-       //     3: {title: 'Чат 3', messageList: []},
-       // },
-       // messages: {
-       //     1: { text: "Привет!", sender: 'bot' },
-       //     2: { text: "Здравствуйте!", sender: 'bot' },
-       // },
        value: '',
    };
+
+   componentDidMount() {
+       //this.props.loadMessages();
+       this.props.loadChats();
+   }
+
+
    //handleSendMessage = (message, sender) => {
        //const { messages, chats, value, chatId } = this.props;
        //const { chatId } = this.props;
@@ -42,25 +49,42 @@ class MessageField extends React.Component{
        // }
    //     this.props.sendMessage(this.state.value, 'adri');
    // };
+   handleSendMessage = (message, sender) => {
+        if (this.state.value.length > 0 || sender === 'bot') {
+            this.props.sendMessage(message, sender);
+        }
+        if (sender === 'adri') {
+            this.setState({ value: '' });
+        }
+    };
 
   handleSubmit = (event) => {
-    this.props.sendMessage(this.state.value, 'adri');
-    this.setState({ value: '' });
+    //this.props.sendMessage(this.state.value, 'adri');
+    this.handleSendMessage(this.state.value, 'adri');
+    //this.setState({ value: '' });
+
     //this.handleSendMessage(this.state.value, 'me')
     //this.setState(state => ([this.props.chatId]: [...state.discussion,{author: 'pedro', message: state.value}], value: ''}));
     event.preventDefault();
   };
 
   // handleChange = (event) => {
-  //   this.setState({value: event.target.value});
-  // };
+  //      this.setState({ [event.target.name]: event.target.value });
+  //  };
   handleChange = (event) => {
        this.setState({ value: event.target.value });
    };
+   // handleKeyUp = (event) => {
+   //      if (event.keyCode === 13) { // Enter
+   //          this.handleSendMessage(this.state.input, 'adri');
+   //      }
+   //  };
   handleKey = (event) => {
     if(event.key === 'Enter'){
-      this.props.sendMessage(this.state.value, 'adri')
-      this.setState({ value: '' });
+      //this.props.sendMessage(this.state.value, 'adri');
+      this.handleSendMessage(this.state.value, 'adri');
+      //this.setState({ value: '' });
+
       //this.setState(state => ([this.props.chatId]: [...state.discussion,{author: 'pedro', message: state.value}], value: ''}));
     }
   }
@@ -97,14 +121,30 @@ class MessageField extends React.Component{
    //
    //  }
 
-   renderMessage = (messId, index) => {
+   //renderMessage = (messId, index) => {
      //console.log(messObj.messageList[]);//ca rends un array avec l'id des messages
      //console.log(this.props.chatId);//ca rends l id du chat actuel
-     //console.log(this.props.messages[messId].sender);
-     return (<Message key={index} mes={this.props.messages[messId].text } aut={this.props.messages[messId].sender} />)
+     //console.log(messId);
+     //return (<Message key={index} mes={this.props.messages[messId].text } aut={this.props.messages[messId].sender} />)
+   //}
+   resetAll = () => {
+     this.props.resetChat();
+     this.props.resetMessage();
    }
-
   render() {
+    if (this.props.isLoading) {
+           return <CircularProgress />
+       }
+      const { chatId, messages, chats } = this.props;
+       console.log(chatId);
+       //const messageElements='';
+       const messageElements = chats[chatId].messageList.map((messageId, index) => (
+         <Message
+             key={ index }
+             mes={ messages[messageId].text }
+             aut={ messages[messageId].sender }
+         />
+           ));
 
     return (
     <div className='textFiels-div'>
@@ -114,53 +154,27 @@ class MessageField extends React.Component{
           <textarea value={this.state.value} onChange={this.handleChange} onKeyPress={this.handleKey}/>
         </label>
         <input type="submit" value="Envoyer" />
+        <button onClick={this.resetAll} >reset all</button>
       </form>
-      {Object.values(this.props.chats[this.props.chatId].messageList).map(this.renderMessage)}
+      { messageElements }
     </div>
   );
   }
 }
 
+
+
+//{Object.values(this.props.chats[this.props.chatId].messageList).map(this.renderMessage)}
+
 // {this.props.chatId!==undefined?
 //   this.state.chats[this.props.chatId].messageList.map(this.renderMessage):
 //   this.state.chats[1].messageList.map(this.renderMessage)}
 
-const mapStateToProps = ({ chatReducer }) => ({
+const mapStateToProps = ({ chatReducer , messageReducer }) => ({
    chats: chatReducer.chats,
+   isLoading: messageReducer.isLoading,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ resetChat, resetMessage , loadChats}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MessageField);
-
-
-
-
-
-
-class Message extends React.Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      answer: ''
-    };
-  }
-  selectClassName = () => {
-    let style1 = 'message-div';
-    if(this.props.aut !== 'adri'){
-      style1 = 'message-div2';
-    }
-    return style1;
-  }
-  render() {
-
-    return (
-      <div className='mess-div'>
-      <div className={this.selectClassName()}>
-        <h2 className='message-author-span'>{this.props.aut}: </h2>
-        <p className='message-p'>{this.props.mes} </p>
-      </div>
-      </div>
-    );
-  }
-}
