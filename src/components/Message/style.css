@@ -1,15 +1,3 @@
-
-.textFiels-div{
-  width: 70%;
-  background-color: #ddffff;
-  float: right;
-}
-.message-author-span{
-  color: #0f9f9f;
-  font-size: 15px;
-  padding: 2px;
-  margin: 0px;
-}
 .mess-div{
   height: 55px;
 }
@@ -32,6 +20,12 @@
 
 .message-p{
   color: black;
+  padding: 2px;
+  margin: 0px;
+}
+.message-author-span{
+  color: #0f9f9f;
+  font-size: 15px;
   padding: 2px;
   margin: 0px;
 }
