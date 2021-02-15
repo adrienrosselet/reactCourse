@@ -172,7 +172,7 @@ class MessageField extends React.Component{
 
 const mapStateToProps = ({ chatReducer , messageReducer }) => ({
    chats: chatReducer.chats,
-   isLoading: messageReducer.isLoading,
+   isLoading: chatReducer.isLoading,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({ resetChat, resetMessage , loadChats}, dispatch);

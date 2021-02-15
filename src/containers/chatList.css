@@ -3,3 +3,7 @@
   background-color: #dddfff;
   float: left;
 }
+.chatList-item:hover{
+  background-color: #dddff0;
+  color: #ffffff;
+}

@@ -56,14 +56,12 @@ class ChatList extends React.Component{
   // }
   renderList = (chatId) => {
     return(
-      <Link key={chatId} to={"/chat/"+(chatId)+"/"} onClick={ () => this.handleNavigate(`/chat/${chatId}/`) } >
-        <ListItem button >
+        <ListItem key={ chatId } onClick={ () => this.handleNavigate(`/chat/${chatId}/`)} className='chatList-item'>
           <ListItemIcon >
             <SendIcon />
           </ListItemIcon>
           <ListItemText  primary={this.props.chats[chatId].title} />
         </ListItem>
-      </Link>
     );
   }
 
