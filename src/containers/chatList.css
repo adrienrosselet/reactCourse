@@ -7,3 +7,8 @@
   background-color: #dddff0;
   color: #ffffff;
 }
+@media screen and (max-width: 650px){
+  .chatlist-ul{
+    display: none;
+  }
+}

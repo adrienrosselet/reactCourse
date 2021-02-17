@@ -35,6 +35,7 @@ class ChatList extends React.Component{
    }
    submitHandler = (event) => {
      this.props.addChat(this.state.newChatName);
+     this.setState({ newChatName: '' });
      event.preventDefault();
    }
 

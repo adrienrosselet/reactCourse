@@ -136,7 +136,6 @@ class MessageField extends React.Component{
            return <CircularProgress />
        }
       const { chatId, messages, chats } = this.props;
-       console.log(chatId);
        //const messageElements='';
        const messageElements = chats[chatId].messageList.map((messageId, index) => (
          <Message
