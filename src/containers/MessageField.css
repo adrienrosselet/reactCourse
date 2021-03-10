@@ -4,3 +4,8 @@
   background-color: #ddffff;
   float: right;
 }
+@media screen and (max-width: 650px){
+  .textFiels-div{
+    width: 100%;
+  }
+}

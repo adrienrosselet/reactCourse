@@ -17,11 +17,9 @@ import { PersistGate } from 'redux-persist/integration/react';
 ReactDOM.render(
   <Provider store={ initStore() }>
     <ConnectedRouter history={history}>
-      <BrowserRouter history={history}>
         <React.StrictMode>
           <App />
         </React.StrictMode>
-      </BrowserRouter>
     </ConnectedRouter>
    </Provider>,
   document.getElementById('root')

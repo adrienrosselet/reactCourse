@@ -136,7 +136,6 @@ class MessageField extends React.Component{
            return <CircularProgress />
        }
       const { chatId, messages, chats } = this.props;
-       console.log(chatId);
        //const messageElements='';
        const messageElements = chats[chatId].messageList.map((messageId, index) => (
          <Message
@@ -172,7 +171,7 @@ class MessageField extends React.Component{
 
 const mapStateToProps = ({ chatReducer , messageReducer }) => ({
    chats: chatReducer.chats,
-   isLoading: messageReducer.isLoading,
+   isLoading: chatReducer.isLoading,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({ resetChat, resetMessage , loadChats}, dispatch);

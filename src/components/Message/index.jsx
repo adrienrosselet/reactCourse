@@ -11,7 +11,7 @@ export default class Message extends React.Component{
   }
   selectClassName = () => {
     let style1 = 'message-div';
-    if(this.props.aut !== 'me' || this.props.aut !== 'adri'){
+    if(this.props.aut !== 'me' && this.props.aut !== 'adri'){
       style1 = 'message-div2';
     }
     return style1;
